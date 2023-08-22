@@ -2,7 +2,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
-from wtforms.validators import NumberRange
+from wtforms.validators import NumberRange, Email
+
+
+
+
 class CheckoutForm(FlaskForm):
 
     choices_payment = [('visa', 'visa'), ('mastercard', 'mastercard')]
@@ -13,6 +17,7 @@ class CheckoutForm(FlaskForm):
 
     first_name = StringField('First: ', validators=[DataRequired()])
     last_name = StringField('Last: ', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     address = StringField('Address: ', validators=[DataRequired()])
     payment_type = SelectField('Select an option', choices=choices_payment)
     card_number = StringField('Card Number', validators=[DataRequired()])

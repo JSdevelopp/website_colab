@@ -3,6 +3,8 @@ from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from the_project import app, db
 from the_project.forms import CheckoutForm
+from the_project.models import logged_out_user
+
 
 
 
@@ -19,12 +21,28 @@ def checkout():
 
     form = CheckoutForm()
 
+    if form.validate_on_submit():
+        
+        user = logged_out_user(first_name = form.first_name.data,
+                               last_name = form.last_name.data,
+                               email =  form.email.data,
+                               address = form.address.data
+                               )
+        print
+        with app.app_context():
+
+            db.session.add(user)
+            db.session.commit()
+            
+        return redirect(url_for('thank_you'))
+
+
     return render_template('checkout.html', form = form)
 
 
-@app.route('/Thank_you')
+@app.route('/thank_you')
 def thank_you():
-    return render_template('Thank_you.html')
+    return render_template('thank_you.html')
 
 
 # @app.route('/about')
