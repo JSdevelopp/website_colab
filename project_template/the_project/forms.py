@@ -7,6 +7,7 @@ from wtforms.validators import NumberRange, Email
 
 
 
+
 class CheckoutForm(FlaskForm):
 
     choices_payment = [('visa', 'visa'), ('mastercard', 'mastercard')]
@@ -25,3 +26,20 @@ class CheckoutForm(FlaskForm):
     card_exp_year = SelectField('Exp Year', choices = year_choices, validate_choice=[DataRequired()])
     cvv = IntegerField('CVV', validators=[DataRequired(), NumberRange(min=100, max=999)])
     submit = SubmitField('Place Order')
+
+
+class RegistrationForm(FlaskForm):
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    first_name = StringField('First Name:', validators=[DataRequired()])
+    last_name = StringField('Last Name:', validators=[DataRequired()])
+    password = PasswordField('Password:', validators=[DataRequired(), EqualTo('pass_confirm', message='Passwords Must Match!')])
+    pass_confirm = PasswordField('Confirm password:', validators=[DataRequired()])
+    submit = SubmitField("Submit:")
+
+    def check_email(self, field):
+        if Registered_user.query.filter_by(email = field.data).first():
+            raise ValidationError('Your email is already registered!')
+        
+    
+
+    
