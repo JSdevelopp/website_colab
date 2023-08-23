@@ -4,10 +4,12 @@ from flask_login import login_user,login_required,logout_user
 from myproject.models import User
 from myproject.forms import LoginForm, RegistrationForm
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import current_user
 
 
 @app.route('/')
 def home():
+    print(current_user)
     return render_template('home.html')
 
 
@@ -35,8 +37,8 @@ def login():
         # Check that the user was supplied and the password is right
         # The verify_password method comes from the User object
         # https://stackoverflow.com/questions/2209755/python-operation-vs-is-not
-
-        if user.check_password(form.password.data) and user is not None:
+        print("User:", user)
+        if user is not None and user.check_password(form.password.data) :
             #Log in the user
 
             login_user(user)

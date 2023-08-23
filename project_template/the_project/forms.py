@@ -40,6 +40,12 @@ class RegistrationForm(FlaskForm):
         if Registered_user.query.filter_by(email = field.data).first():
             raise ValidationError('Your email is already registered!')
         
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Log in')
+        
     
 
     

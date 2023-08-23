@@ -1,16 +1,18 @@
 from the_project import app, db
 from flask import render_template, redirect, request, url_for, flash, abort
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from the_project.models import logged_out_user, Registered_user
-from the_project.forms import CheckoutForm, RegistrationForm
+from the_project.forms import CheckoutForm, RegistrationForm, LoginForm
 from sqlalchemy.exc import SQLAlchemyError
 
 
 @app.route('/')
 def home():
-
-    return render_template('home.html')
+    with db.engine.connect() as connection:
+   
+        books = connection.execute("SELECT quantity_count FROM books")
+        return render_template('home.html',books = books)
 
 
 @app.route('/checkout', methods =['GET', 'POST'])
@@ -32,14 +34,7 @@ def checkout():
             db.session.commit()
             
         return redirect(url_for('thank_you'))
-
-
     return render_template('checkout.html', form = form)
-
-
-
-
-
 
 @app.route('/register', methods =['GET', 'POST'])
 def register():
@@ -64,29 +59,71 @@ def register():
             print('User not added')
 
         return redirect(url_for('thank_you'))
-
-
     return render_template('register.html', form = form)
 
 
-
-
 @app.route('/show_table_items')
+@login_required
 def list_database():
     with db.engine.connect() as connection:
+        books = connection.execute("SELECT * FROM books;")
         result = connection.execute("SELECT * FROM customer;")
         tables = connection.execute("SELECT name FROM sqlite_master WHERE type='table';")
         registerd_users = connection.execute("SELECT * FROM registered_users;")
 
+        return render_template('show_table_items.html', books = books, result = result, tables = tables, registerd_users = registerd_users)
 
-        return render_template('show_table_items.html', result = result, tables = tables, registerd_users = registerd_users)
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+
+    form = LoginForm()
+    if form.validate_on_submit():
+
+        #looks for this specific email in the database
+        registered_user = Registered_user.query.filter_by(email = form.email.data).first()
+
+        
+        if registered_user is not None:
+            if registered_user.check_password(form.password.data):
+                print(registered_user)
+                login_user(registered_user)
+                flash('Logged In')
+
+                next = request.args.get('next')
+                
+                if next == None or not next[0] == '/':
+                    next = url_for('welcome_user')
+
+                return redirect(next)
+    return render_template('login.html', form = form)
+
+@app.route('/logged_in')
+@login_required
+def welcome_user():
+    return render_template('welcome.html')
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You logged out!')
+    return redirect(url_for('home'))
 
 
 @app.route('/thank_you')
 def thank_you():
     return render_template('thank_you.html')
+
+
+@app.route('/order_history')
+@login_required
+def orders():
+    with db.engine.connect() as connection:
+        result = connection.execute("""SELECT * FROM customer WHERE email = :email;""", email=current_user.email)
+
+        return render_template('/order_history.html', result = result)
 
 
 # @app.route('/about')

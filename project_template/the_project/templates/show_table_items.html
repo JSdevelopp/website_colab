@@ -1,14 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Here is a list of all the table items</h1>
-<br>
-<h2>customers who purchased items</h2>
-<ul>
-    {%for item in result%}
-    <li>{{item}}</li>
-    {%endfor%}
-</ul>
+<h1>Database info</h1>
 <br>
 <h2>Tables</h2>
 <ul>
@@ -16,11 +9,52 @@
     <li>{{item}}</li>
     {%endfor%}
 </ul>
+<br>
+<h2>customers</h2>
+<ul>
+    {%for item in result%}
+    <li>{{item}}</li>
+    {%endfor%}
+</ul>
+<h3>customer table column names</h3>
+<ul>
+    {%for item in result.keys()%}
+    <li>{{item}}</li>
+    {%endfor%}
+</ul>
+<br>
+
+
+
+
 <h2>Registered users</h2>
 <ul>
     {%for item in registerd_users%}
     <li>{{item}}</li>
     {%endfor%}
 </ul>
+<h3>Registered user column names</h3>
+<ul>
+    {%for item in registerd_users.keys()%}
+    <li>{{item}}</li>
+    {%endfor%}
+</ul>
+<br>
+<h2>Books</h3>
+    <ul>
+        {%for item in books%}
+        <li>{{item}}</li>
+        {%endfor%}
+    </ul>
+<h3>
+    Books column names
+</h3>
+<ul>
+    {%for item in books.keys()%}
+    <li>{{item}}</li>
+    {%endfor%}
+</ul>
+
+
 
 {% endblock content %}
