@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+<h1>Order History</h1>
+
+<ul>
+
+    {%for item in result%}
+        <li>{{item}}</li>
+    {%endfor%}
+
+</ul>
+<ul>
+
+    {%for item in result.keys()%}
+        <li>{{item}}</li>
+    {%endfor%}
+
+</ul>
+
+
+
+
+
+{% endblock content %}
