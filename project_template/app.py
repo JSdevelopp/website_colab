@@ -98,6 +98,7 @@ def login():
                 return redirect(next)
     return render_template('login.html', form = form)
 
+
 @app.route('/logged_in')
 @login_required
 def welcome_user():
