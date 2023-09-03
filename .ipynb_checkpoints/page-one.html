@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Best Bookstore</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <!-- Cart button and count -->
+    <div class="cart-button">
+        <button id="cart-button">Cart <span id="cart-count">0</span></button>   
+    </div>
+
+    <!-- Header section with the dropdown menu -->
+    <div class="header">
+        <div class="dropdown">
+            <button class="dropbtn">Menu</button>
+            <!-- Dropdown content -->
+            <div class="dropdown-content">
+                <a href="#">Home</a>
+                <a href="#">Genres</a>
+                <a href="#">Authors</a>
+                <!-- Add more links as needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content section -->    
+    <div class="content">
+        <h1>The Best Bookstore</h1> 
+        <h3>We really are the best!</h3>
+    </div>
+
+    <!-- Large box in the middle of the screen to hold book entries -->
+    <div class="large-box" id="book-container"></div>
+
+    <!-- Pagination buttons -->
+    <div class="pagination">
+        <button id="prev-button">Previous</button>
+        <button id="next-button">Next</button>
+    </div>
+
+    <script>
+        // Array of book objects
+        const books = [
+            {
+                image: "https://prodimage.images-bn.com/pimages/9781544512273_p0_v8_s1200x630.jpg",
+                title: "Can't Hurt Me",
+                ratings: 5,
+                price: "$19.99",
+                stock: 5,
+            },
+            {
+                image: "book2.jpg",
+                title: "Book Title 2",
+                ratings: 4,
+                price: "$14.99",
+                stock: 3,
+            },
+            // Add more books as needed
+        ];
+
+        // Get the book container element
+        const bookContainer = document.getElementById("book-container");
+        const cartButton = document.getElementById("cart-button");
+        const cartCount = document.getElementById("cart-count");
+
+        let cartItems = 0;
+
+        // Pagination variables
+        const booksPerPage = 20; // Number of books to display per page
+        let currentPage = 1; // Current page
+
+        const prevButton = document.getElementById("prev-button");
+        const nextButton = document.getElementById("next-button");
+
+        // Function to generate star rating HTML
+        function getStarRatingHTML(ratings) {
+            const star = '<span class="star">&#9733;</span>';
+            return star.repeat(ratings);
+        }
+
+        // Function to display books for the current page
+        function displayBooks() {
+            // Clear the book container
+            bookContainer.innerHTML = "";
+
+            // Calculate the start and end index for the current page
+            const startIndex = (currentPage - 1) * booksPerPage;
+            const endIndex = startIndex + booksPerPage;
+
+            // Loop through each book and create book entries for the current page
+            for (let i = startIndex; i < Math.min(endIndex, books.length); i++) {
+                const book = books[i];
+                const bookEntry = document.createElement("div");
+                bookEntry.className = "book-entry";
+
+                bookEntry.innerHTML = `
+                    <img src="${book.image}" alt="${book.title}">
+                    <h3>${book.title}</h3>
+                    <div class="ratings">
+                        ${getStarRatingHTML(book.ratings)}
+                    </div>
+                    <p>Price: ${book.price}</p>
+                    <p class="availability">${book.stock > 0 ? 'In Stock <span class="checkmark">&#10003;</span>' : 'Out of Stock'}</p>
+                    ${book.stock > 0 ? '<button class="add-to-cart">Add to Cart</button>' : ''}
+                `;
+
+                const addToCartButton = bookEntry.querySelector(".add-to-cart");
+                if (addToCartButton) { // Check if the button exists (for books in stock)
+                    addToCartButton.addEventListener("click", () => {
+                        if (book.stock > 0) {
+                            cartItems++;
+                            cartCount.textContent = cartItems;
+                            book.stock--; // Decrease the stock after adding to cart
+                            if (book.stock === 0) {
+                                bookEntry.querySelector(".availability").textContent = "Out of Stock"; // Update availability message
+                                addToCartButton.remove(); // Remove "Add to Cart" button
+                            }
+                        } else {
+                            alert("This book is out of stock and cannot be added to the cart.");
+                        }
+                    });
+                }
+
+                bookContainer.appendChild(bookEntry);
+            }
+        }
+
+        // Event listener for Next button
+        nextButton.addEventListener("click", () => {
+            if (currentPage < Math.ceil(books.length / booksPerPage)) {
+                currentPage++;
+                displayBooks();
+            }
+        });
+
+        // Event listener for Previous button
+        prevButton.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayBooks();
+            }
+        });
+
+        // Initial display
+        displayBooks();
+    </script>
+
+    <!-- About us section-->
+    <section class="about-us">
+        <h2><a href="website-homepage.html">Home</a></h2>
+        <h2><a href="about.html">About Us</a></h2>
+        <h2><a href="contact.html">Contact Us</a></h2>
+    </section>
+
+    <!-- Footer section-->
+    <footer class="footer">
+        &copy; 2023 The Best Bookstore. All rights reserved.
+    </footer>
+</body>
+</html>

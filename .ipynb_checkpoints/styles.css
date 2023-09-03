@@ -1,0 +1,205 @@
+/* Apply basic styling to the entire page */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Styling for the cart button */
+.cart-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#cart-button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+
+    display: flex;
+    align-items: center; /* Center vertically */
+}
+
+#cart-count {
+    margin-left: 5px;
+    font-weight: bold;
+
+    font-size: 18px;
+}
+
+
+/* Styling for the header section containing the dropdown menu */
+.header {
+    background-color: blue;
+    text-align: center;
+}
+
+/* Styling for the dropdown container */
+.dropdown {
+    display: inline-block;
+    position: relative;
+    margin: 0 auto;
+}
+
+/* Styling for the dropdown button */
+.dropbtn {
+    font-size: 14px;
+    border: none;
+    outline: none;
+    color:antiquewhite;
+    background-color: inherit;
+    padding: 14px 16px;
+    margin: 0;
+
+}
+
+/* Styling for the dropdown content container */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+/* Styling for the links within the dropdown content */
+.dropdown-content a {
+    color:black;
+    padding: 12px 12px;
+    text-decoration: block;
+
+}
+
+ /* Styling for the links when hovered */
+.dropdown-content a:hover {
+    background-color: aqua;
+}
+
+
+/* Show the dropdown content when hovering over the dropdown container */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+ /* Styling for the main content section */
+.content {
+    text-align: center;
+    margin: 100px;
+}
+
+/* Styling for the large box */
+.large-box {
+    /* width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 470px 650px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow: hidden; /* Prevent overflow */
+
+}
+
+.large-box h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+
+}
+
+.large-box p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.large-box a {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: white;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.large-box a:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for the book entries */
+.book-entry {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin: 10px;
+    background-color: #f9f9f9;
+    text-align: center;  */
+    display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-items: center;
+    max-width: 250px; 
+    border: 1px solid #ddd;
+    margin: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+
+}
+
+.book-entry img {
+    max-width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.home {
+    flex: 1;
+    text-align: center;
+    padding: 40px;
+    background-color: #ffffff;
+}
+
+.about-us {
+    flex: 1;
+    text-align: center;
+    padding: 40px;
+    background-color: #ffffff;
+}
+
+.contact-us {
+    flex: 1;
+    text-align: center;
+    padding: 40px;
+    background-color: #ffffff;
+}
+
+
+/* Styling for the footer section */
+.footer {
+    display: flex;
+    justify-content: space-evenly; /* Align items evenly */
+    padding: 20px 0;
+    background-color: #f4f4f4;
+    border-top: 1px solid #ddd;
+}
