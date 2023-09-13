@@ -2,9 +2,10 @@
 <html>
 <head>
     <title>The Best Bookstore</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="page-one.css">
 </head>
 <body>
+
     <!-- Cart button and count -->
     <div class="cart-button">
         <button id="cart-button">Cart <span id="cart-count">0</span></button>   
@@ -34,7 +35,7 @@
     <div class="large-box" id="book-container"></div>
 
     <!-- Pagination buttons -->
-    <div class="pagination">
+    <div class="pagination-wrapper">
         <button id="prev-button">Previous</button>
         <button id="next-button">Next</button>
     </div>
@@ -66,12 +67,41 @@
 
         let cartItems = 0;
 
-        // Pagination variables
-        const booksPerPage = 20; // Number of books to display per page
-        let currentPage = 1; // Current page
+        // Loop through each book and create book entries
+        for (const book of books) {
+            const bookEntry = document.createElement("div");
+            bookEntry.className = "book-entry";
 
-        const prevButton = document.getElementById("prev-button");
-        const nextButton = document.getElementById("next-button");
+            bookEntry.innerHTML = `
+                <img src="${book.image}" alt="${book.title}">
+                <h3>${book.title}</h3>
+                <div class="ratings">
+                    ${getStarRatingHTML(book.ratings)}
+                </div>
+                <p>Price: ${book.price}</p>
+                <p class="availability">${book.stock > 0 ? 'In Stock <span class="checkmark">&#10003;</span>' : 'Out of Stock'}</p>
+                ${book.stock > 0 ? '<button class="add-to-cart">Add to Cart</button>' : ''}
+            `;
+
+            const addToCartButton = bookEntry.querySelector(".add-to-cart");
+            if (addToCartButton) { // Check if the button exists (for books in stock)
+                addToCartButton.addEventListener("click", () => {
+                    if (book.stock > 0) {
+                        cartItems++;
+                        cartCount.textContent = cartItems;
+                        book.stock--; // Decrease the stock after adding to cart
+                        if (book.stock === 0) {
+                            bookEntry.querySelector(".availability").textContent = "Out of Stock"; // Update availability message
+                            addToCartButton.remove(); // Remove "Add to Cart" button
+                        }
+                    } else {
+                        alert("This book is out of stock and cannot be added to the cart.");
+                    }
+                });
+            }
+
+            bookContainer.appendChild(bookEntry);
+        }
 
         // Function to generate star rating HTML
         function getStarRatingHTML(ratings) {
@@ -79,71 +109,30 @@
             return star.repeat(ratings);
         }
 
-        // Function to display books for the current page
-        function displayBooks() {
-            // Clear the book container
-            bookContainer.innerHTML = "";
+        // Pagination
+        //Define the current page and the total number of pages
+        let currentPage = 1;
+        const totalPages = 20; // Total number of pages we will have
 
-            // Calculate the start and end index for the current page
-            const startIndex = (currentPage - 1) * booksPerPage;
-            const endIndex = startIndex + booksPerPage;
+        // Get a reference to the "Next" button
+        const nextButton = document.getElementById("next-button");
 
-            // Loop through each book and create book entries for the current page
-            for (let i = startIndex; i < Math.min(endIndex, books.length); i++) {
-                const book = books[i];
-                const bookEntry = document.createElement("div");
-                bookEntry.className = "book-entry";
+        // Get a reference to the "Previous" button
+        const prevButton = document.getElementById("prev-button");
 
-                bookEntry.innerHTML = `
-                    <img src="${book.image}" alt="${book.title}">
-                    <h3>${book.title}</h3>
-                    <div class="ratings">
-                        ${getStarRatingHTML(book.ratings)}
-                    </div>
-                    <p>Price: ${book.price}</p>
-                    <p class="availability">${book.stock > 0 ? 'In Stock <span class="checkmark">&#10003;</span>' : 'Out of Stock'}</p>
-                    ${book.stock > 0 ? '<button class="add-to-cart">Add to Cart</button>' : ''}
-                `;
-
-                const addToCartButton = bookEntry.querySelector(".add-to-cart");
-                if (addToCartButton) { // Check if the button exists (for books in stock)
-                    addToCartButton.addEventListener("click", () => {
-                        if (book.stock > 0) {
-                            cartItems++;
-                            cartCount.textContent = cartItems;
-                            book.stock--; // Decrease the stock after adding to cart
-                            if (book.stock === 0) {
-                                bookEntry.querySelector(".availability").textContent = "Out of Stock"; // Update availability message
-                                addToCartButton.remove(); // Remove "Add to Cart" button
-                            }
-                        } else {
-                            alert("This book is out of stock and cannot be added to the cart.");
-                        }
-                    });
-                }
-
-                bookContainer.appendChild(bookEntry);
-            }
-        }
-
-        // Event listener for Next button
+        // Add an event listener to the "Next button"
         nextButton.addEventListener("click", () => {
-            if (currentPage < Math.ceil(books.length / booksPerPage)) {
+            if (currentPage < totalPages) {
                 currentPage++;
-                displayBooks();
+                window.location.href = "page-one.html"; // Navigate to the next page
             }
-        });
+        })
 
-        // Event listener for Previous button
+        // Add an event listener to the "Previous" button
         prevButton.addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayBooks();
-            }
+            window.location.href = "website-homepage.html"; // Navigate back to the homepage
         });
 
-        // Initial display
-        displayBooks();
     </script>
 
     <!-- About us section-->
@@ -153,9 +142,13 @@
         <h2><a href="contact.html">Contact Us</a></h2>
     </section>
 
-    <!-- Footer section-->
-    <footer class="footer">
-        &copy; 2023 The Best Bookstore. All rights reserved.
-    </footer>
+    
+ 
 </body>
+
+<!-- Footer section-->
+<footer class="footer">
+    &copy; 2023 The Best Bookstore. All rights reserved.
+</footer>
+
 </html>

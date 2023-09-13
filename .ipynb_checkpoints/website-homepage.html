@@ -35,7 +35,7 @@
     <div class="large-box" id="book-container"></div>
 
     <!-- Pagination buttons -->
-    <div class="pagination">
+    <div class="pagination-wrapper">
         <button id="next-button">Next</button>
     </div>
 
@@ -107,6 +107,23 @@
             const star = '<span class="star">&#9733;</span>';
             return star.repeat(ratings);
         }
+
+        // Pagination
+        //Define the current page and the total number of pages
+        let currentPage = 1;
+        const totalPages = 20; // Total number of pages we will have
+
+        // Get a reference to the "Next" button
+        const nextButton = document.getElementById("next-button");
+
+        // Add an event listener to the "Next button"
+        nextButton.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                window.location.href = "page-one.html"; // Navigate to the next page
+            }
+        })
+
     </script>
 
     <!-- About us section-->
@@ -116,10 +133,13 @@
         <h2><a href="contact.html">Contact Us</a></h2>
     </section>
 
-    <!-- Footer section-->
-    <footer class="footer">
-        &copy; 2023 The Best Bookstore. All rights reserved.
-    </footer>
+    
  
 </body>
+
+<!-- Footer section-->
+<footer class="footer">
+    &copy; 2023 The Best Bookstore. All rights reserved.
+</footer>
+
 </html>

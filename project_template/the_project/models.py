@@ -51,7 +51,6 @@ class Pages_info(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     book_url = db.Column(db.String(128), unique=True, index=True)
     star_url = db.Column(db.String(128), index=True)
-    
     text = db.Column(db.String(128), index=True)
     price_dollars = db.Column(db.Float)
     quantity_count = db.Column(db.Integer)
