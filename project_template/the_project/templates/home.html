@@ -1,11 +1,146 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Home page goes here</h1>
-<ul>
-    {%for item in books%}
-        <li>{{item}}</li>
-    {%endfor%}
-</ul>
+<body>
+
+    <!-- Cart button and count -->
+    <div class="cart-button">
+        <button id="cart-button">Cart <span id="cart-count">0</span></button>   
+    </div>
+
+    <!-- Header section with the dropdown menu -->
+    <div class="header">
+        <div class="dropdown">
+            <button class="dropbtn">Menu</button>
+            <!-- Dropdown content -->
+            <div class="dropdown-content">
+                <a href="#">Home</a>
+                <a href="#">Genres</a>
+                <a href="#">Authors</a>
+                <!-- Add more links as needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content section -->    
+    <div class="content">
+        <h1>The Best Bookstore</h1> 
+        <h3>We really are the best!</h3>
+    </div>
+
+    <!-- Large box in the middle of the screen to hold book entries -->
+    <div class="large-box" id="book-container"></div>
+
+    <!-- Pagination buttons -->
+    <div class="pagination-wrapper">
+        <button id="next-button">Next</button>
+    </div>
+
+    <script>
+        // Array of book objects
+        const books = [
+            {
+                image: "https://prodimage.images-bn.com/pimages/9781544512273_p0_v8_s1200x630.jpg",
+                title: "Can't Hurt Me",
+                ratings: 5,
+                price: "$19.99",
+                stock: 5,
+            },
+            {
+                image: "book2.jpg",
+                title: "Book Title 2",
+                ratings: 4,
+                price: "$14.99",
+                stock: 3,
+            },
+            // Add more books as needed
+        ];
+
+        // Get the book container element
+        const bookContainer = document.getElementById("book-container");
+        const cartButton = document.getElementById("cart-button");
+        const cartCount = document.getElementById("cart-count");
+
+        let cartItems = 0;
+
+        // Loop through each book and create book entries
+        for (const book of books) {
+            const bookEntry = document.createElement("div");
+            bookEntry.className = "book-entry";
+
+
+            
+            bookEntry.innerHTML = `
+                <img src={{sql_book[1].book_url}} alt="${book.title}">
+                
+                <div class="ratings">
+                    ${getStarRatingHTML(book.ratings)}
+                </div>
+                <p>Price: {{sql_book[1].price_dollars}}</p>
+                {{sql_book[1].quantity_count}} 
+                
+                <p class="availability">${book.stock > 0 ? 'In Stock <span class="checkmark">&#10003;</span>' : 'Out of Stock'}</p>
+                ${book.stock > 0 ? '<button class="add-to-cart">Add to Cart</button>' : ''}
+            `;
+
+            const addToCartButton = bookEntry.querySelector(".add-to-cart");
+            if (addToCartButton) { // Check if the button exists (for books in stock)
+                addToCartButton.addEventListener("click", () => {
+                    if (book.stock > 0) {
+                        cartItems++;
+                        cartCount.textContent = cartItems;
+                        book.stock--; // Decrease the stock after adding to cart
+                        if (book.stock === 0) {
+                            bookEntry.querySelector(".availability").textContent = "Out of Stock"; // Update availability message
+                            addToCartButton.remove(); // Remove "Add to Cart" button
+                        }
+                    } else {
+                        alert("This book is out of stock and cannot be added to the cart.");
+                    }
+                });
+            }
+
+            bookContainer.appendChild(bookEntry);
+        }
+
+        // Function to generate star rating HTML
+        function getStarRatingHTML(ratings) {
+            const star = '<span class="star">&#9733;</span>';
+            return star.repeat(ratings);
+        }
+
+        // Pagination
+        //Define the current page and the total number of pages
+        let currentPage = 1;
+        const totalPages = 20; // Total number of pages we will have
+
+        // Get a reference to the "Next" button
+        const nextButton = document.getElementById("next-button");
+
+        // Add an event listener to the "Next button"
+        nextButton.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                window.location.href = "page-one.html"; // Navigate to the next page
+            }
+        })
+
+    </script>
+
+    <!-- About us section-->
+    <section class="about-us">
+        <h2><a href="website-homepage.html">Home</a></h2>
+        <h2><a href="about.html">About Us</a></h2>
+        <h2><a href="contact.html">Contact Us</a></h2>
+    </section>
+
+    
+ 
+</body>
+
+<!-- Footer section-->
+<footer class="footer">
+    &copy; 2023 The Best Bookstore. All rights reserved.
+</footer>
 
 
 
