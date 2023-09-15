@@ -67,13 +67,17 @@
             const bookEntry = document.createElement("div");
             bookEntry.className = "book-entry";
 
+
+            
             bookEntry.innerHTML = `
-                <img src="{{sql_book.book_url}}" alt="${book.title}">
-                <h3>${book.title}</h3>
+                <img src={{sql_book[1].book_url}} alt="${book.title}">
+                
                 <div class="ratings">
                     ${getStarRatingHTML(book.ratings)}
                 </div>
-                <p>Price: ${book.price}</p>
+                <p>Price: {{sql_book[1].price_dollars}}</p>
+                {{sql_book[1].quantity_count}} 
+                
                 <p class="availability">${book.stock > 0 ? 'In Stock <span class="checkmark">&#10003;</span>' : 'Out of Stock'}</p>
                 ${book.stock > 0 ? '<button class="add-to-cart">Add to Cart</button>' : ''}
             `;
