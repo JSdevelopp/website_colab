@@ -10,9 +10,9 @@ from the_project.models import Pages_info, logged_out_user
 @app.route('/')
 def home():
     
-    books = Pages_info.query.with_entities(Pages_info.quantity_count).all()
+    sql_book = Pages_info.query.with_entities(Pages_info).all()
     apple = logged_out_user.query.with_entities(logged_out_user.email).all()
-    return render_template('home.html', books=books, apple=apple)
+    return render_template('home.html', sql_book=sql_book, apple=apple)
         
 
 
