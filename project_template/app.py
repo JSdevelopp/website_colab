@@ -5,14 +5,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from the_project.models import logged_out_user, Registered_user
 from the_project.forms import CheckoutForm, RegistrationForm, LoginForm
 from sqlalchemy.exc import SQLAlchemyError
-
+from the_project.models import Pages_info, logged_out_user
 
 @app.route('/')
 def home():
-    with db.engine.connect() as connection:
-   
-        books = connection.execute("SELECT quantity_count FROM books")
-        return render_template('home.html',books = books)
+    
+    sql_book = Pages_info.query.with_entities(Pages_info).all()
+    apple = logged_out_user.query.with_entities(logged_out_user.email).all()
+    return render_template('home.html', sql_book=sql_book, apple=apple)
+        
 
 
 @app.route('/checkout', methods =['GET', 'POST'])
