@@ -105,6 +105,11 @@
   margin-left: 50px; /* Adjust this value to push the logos further to the right */
 }
 
+/* Payment card type style */
+.spacing-label {
+  margin-right: 10px;
+}
+
 .card-logo {
   margin-left: 10px; /* increased spacing between logos */
   height: 40px; /* adjust to make logos bigger or smaller */

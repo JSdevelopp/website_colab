@@ -23,11 +23,24 @@ def checkout():
 
     if form.validate_on_submit():
 
-        user = logged_out_user(first_name=form.first_name.data,
-                               last_name=form.last_name.data,
-                               email=form.email.data,
-                               address=form.address.data
-                               )
+
+        # Change this to user data object and create the user class instance into a separate line
+        # Added address, apartment, city, state, zip code, phone inputs
+        user_data = {
+            "first_name": form.first_name.data,
+            "last_name": form.last_name.data,
+            "email": form.email.data,
+            "address": form.address.data,
+            "apartment": form.apartment.data if form.apartment.data else None, # Check if provided
+            "city": form.city.data,
+            "state": form.state.data,
+            "zip_code": form.zip_code.data,
+            "phone": form.customer_phone.data if form.customer_phone.data else None,  # Check if provided
+            
+        }
+        
+        # User class instance
+        user = logged_out_user(user_data)
 
         with app.app_context():
 
