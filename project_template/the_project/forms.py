@@ -22,10 +22,10 @@ class CheckoutForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     address = StringField('Address: ', validators=[DataRequired()])
     
-    # Apartment field 
+    # Apartment field -added to new
     apartment  = StringField('Apartment:', render_kw= {"maxlength": 10, "placeholder": "Apartment/Floor/Suite"})
     
-    # City input based on additional fields
+    # City input based on additional fields added to new
     city = StringField('City: ', validators=[DataRequired()])
     
     # US States - GPT automated 
@@ -84,17 +84,17 @@ class CheckoutForm(FlaskForm):
     ('DC', 'Washington, D.C.')
 ]
 
-    # State input field
+    # State input field - Modified to be dropdown
     state = SelectField('State', choices=us_states, validators=[DataRequired()])
     
-    # Zip code input field
+    # Zip code input field - Added to new
     zip_code = StringField('Zip Code:', validators=[DataRequired()])
     
-    # customer phone input field - Optional Field
+    # customer phone input field - Optional Field - Added to new
     customer_phone = StringField('Phone Number:')
     
     # Card payments info are not required
-    # Name on Card
+    # Name on Card - Added to new
     card_name = StringField('Name on Card:')
     
     payment_type = SelectField('Select a payment card type ', choices=choices_payment)
@@ -102,7 +102,7 @@ class CheckoutForm(FlaskForm):
     # card_exp_month = SelectField('Exp Month', choices = month_choices, validate_choice=[DataRequired()])
     # card_exp_year = SelectField('Exp Year', choices = year_choices, validate_choice=[DataRequired()])
     
-    # Users wanting to manually enter the exp month and year
+    # Users wanting to manually enter the exp month and year - modified
     card_expiry = StringField('Card Expiration (MM/YY)', [
         validators.Length(min=5, max=5),
         validators.Regexp(regex="^(0[1-9]|1[0-2])\/?([0-9]{2})$", message="Invalid date format.")
@@ -110,6 +110,7 @@ class CheckoutForm(FlaskForm):
     
     # cvv = IntegerField('CVV', validators=[DataRequired(), NumberRange(min=100, max=999)])
     
+    # Modified
     cvv = StringField('CVV', [
         validators.Length(min=3, max=3),
         validators.Regexp(regex="^[0-9]{3}$", message="Invalid CVV format.")
