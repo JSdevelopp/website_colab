@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
-{% block content %}
+{% block content %} {{ super() }}
+
+
+
+
+
+
 <body>
 
     <!-- Cart button and count -->
@@ -41,7 +47,7 @@
     </div>
 
     <!-- Include the external JavaScript file -->
-    <script src="home.js"></script>
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 
     <!-- About us section-->
     <section class="about-us">
