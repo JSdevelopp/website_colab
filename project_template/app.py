@@ -1,8 +1,8 @@
 from the_project import app, db
-from flask import render_template, redirect, request, url_for, flash, abort
+from flask import render_template, redirect, request, url_for, flash, abort, jsonify  # Add jsonify import
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from the_project.models import logged_out_user, Registered_user
+from the_project.models import logged_out_user, Registered_user, Pages_info # Import Pages_info model
 from the_project.forms import CheckoutForm, RegistrationForm, LoginForm
 from sqlalchemy.exc import SQLAlchemyError
 from the_project.models import Pages_info, logged_out_user
@@ -126,6 +126,69 @@ def orders():
         result = connection.execute("""SELECT * FROM customer WHERE email = :email;""", email=current_user.email)
 
         return render_template('/order_history.html', result = result)
+    
+
+@app.route('/')
+def index():
+    sql_book = Pages_info.query.with_entities(Pages_info.book_url, Pages_info.star_url).all()
+    apple = logged_out_user.query.with_entities(logged_out_user.email).all()
+    return render_template('home.html', sql_book=sql_book, apple=apple)
+
+
+
+@app.route('/api/books')
+def get_books():
+    try:
+        # Get the 'limit' and 'offset' query parameters from the request
+        limit = int(request.args.get('limit', 12))  # Default to 12 if 'limit' is not provided
+        offset = int(request.args.get('offset', 0))  # Default to 0 if 'offset' is not provided
+
+        # Query the database to get book information with the specified limit and offset
+        books = Pages_info.query.offset(offset).limit(limit).all()
+
+        # Convert the list of book objects to a list of dictionaries
+        book_data = []
+        for book in books:
+            book_data.append({
+                'image': book.book_url,
+                'title': book.text,
+                'ratings': 5,  # You might want to modify this if you have book ratings in your database
+                'price': f"${book.price_dollars}",
+                'stock': book.quantity_count
+            })
+
+        return jsonify(book_data)
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
+
+
+
+
+
+
+
+
+# # To get all of the book data at once - Matt 9/15/2023
+# @app.route('/api/books')
+# def get_books():
+#     # Query the database to get book information
+#     books = Pages_info.query.all()
+
+#     # Convert the list of book objects to a list of dictionaries
+#     book_data = []
+#     for book in books:
+#         book_data.append({
+#             'image': book.book_url,
+#             'title': book.text,
+#             'ratings': 5,  # You might want to modify this if you have book ratings in your database
+#             'price': f"${book.price_dollars}",
+#             'stock': book.quantity_count
+#         })
+
+#     return jsonify(book_data)
+
 
 
 # @app.route('/about')

@@ -4,6 +4,8 @@ from wtforms.validators import DataRequired, Email, EqualTo
 from wtforms import ValidationError
 from wtforms.validators import NumberRange, Email
 
+from the_project.models import Registered_user
+
 
 
 
