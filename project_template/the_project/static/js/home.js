@@ -4,12 +4,15 @@ const bookContainer = document.getElementById("book-container");
 const cartButton = document.getElementById("cart-button");
 const cartCount = document.getElementById("cart-count");
 
+
 let cartItems = 0;
 
 async function fetchBooks() {
     try {
-        const limit = 12; // Set the limit to 10
-        const response = await fetch(`/api/books?limit=${limit}`); // Pass the 'limit' parameter)
+        let lowerLimit = 12; // Set your lower limit
+        let upperLimit = 24; // Set your upper limit
+        const response = await fetch(`/api/books?lower_limit=${lowerLimit}&upper_limit=${upperLimit}`);
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -72,8 +75,11 @@ fetchBooks();
 
         // Add an event listener to the "Next button"
         nextButton.addEventListener("click", () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                window.location.href = "page-one.html"; // Navigate to the next page
-            }
+            fetchBooks()
+            // console.log(lowerLimit)
+            // console.log(upperLimit)
+            // lowerLimit += 12
+            // upperLimit += 12
+            // console.log(lowerLimit)
+            // console.log(upperLimit)
         })

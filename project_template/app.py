@@ -141,12 +141,18 @@ def get_books():
     upper_limit = 12
     lower_limit = 0
     try:
-        # Get the 'limit' and 'offset' query parameters from the request
-        limit = int(request.args.get('limit', upper_limit))  # Default to 12 if 'limit' is not provided
-        offset = int(request.args.get('offset', lower_limit))  # Default to 0 if 'offset' is not provided
+        # # Get the 'limit' and 'offset' query parameters from the request
+        # limit = int(request.args.get('limit', upper_limit))  # Default to 12 if 'limit' is not provided
+        # offset = int(request.args.get('offset', lower_limit))  # Default to 0 if 'offset' is not provided
 
-        # Query the database to get book information with the specified limit and offset
-        books = Pages_info.query.offset(offset).limit(limit).all()
+        lower_limit = int(request.args.get('lower_limit', 0))  # Default lower limit to 0 if not provided
+        upper_limit = int(request.args.get('upper_limit', 20))  # Default upper limit to 20 if not provided
+
+        # Query the database to get book information within the specified range
+        books = Pages_info.query.offset(lower_limit).limit(upper_limit - lower_limit)
+
+        # # Query the database to get book information with the specified limit and offset
+        # books = Pages_info.query.offset(offset).limit(limit).all()
 
         # Convert the list of book objects to a list of dictionaries
         book_data = []
