@@ -138,10 +138,12 @@ def index():
 
 @app.route('/api/books')
 def get_books():
+    upper_limit = 12
+    lower_limit = 0
     try:
         # Get the 'limit' and 'offset' query parameters from the request
-        limit = int(request.args.get('limit', 12))  # Default to 12 if 'limit' is not provided
-        offset = int(request.args.get('offset', 0))  # Default to 0 if 'offset' is not provided
+        limit = int(request.args.get('limit', upper_limit))  # Default to 12 if 'limit' is not provided
+        offset = int(request.args.get('offset', lower_limit))  # Default to 0 if 'offset' is not provided
 
         # Query the database to get book information with the specified limit and offset
         books = Pages_info.query.offset(offset).limit(limit).all()
@@ -162,9 +164,14 @@ def get_books():
         return jsonify({'error': str(e)})
 
 
+@app.route('/about_us')
+def about_us_page():
+    return render_template('about_us.html')
 
 
-
+# @app.route('/contact_us')
+# def about_us_page():
+#     return render_template('about_us.html')
 
 
 
