@@ -6,13 +6,21 @@ from the_project.models import logged_out_user, Registered_user, Pages_info # Im
 from the_project.forms import CheckoutForm, RegistrationForm, LoginForm
 from sqlalchemy.exc import SQLAlchemyError
 from the_project.models import Pages_info, logged_out_user
+lower_limit = 0
+
+# # @app.route('/')
+# def index():
+#     sql_book = Pages_info.query.with_entities(Pages_info.book_url, Pages_info.star_url).all()
+#     apple = logged_out_user.query.with_entities(logged_out_user.email).all()
+#     return render_template('home.html', sql_book=sql_book, apple=apple)
 
 @app.route('/')
 def home():
+    global lower_limit
     sql_book = Pages_info.query.all()
     # sql_book = Pages_info.query.with_entities(Pages_info.quantity_count).all()
     apple = logged_out_user.query.with_entities(logged_out_user.email).all()
-    return render_template('home.html', sql_book=sql_book, apple=apple)
+    return render_template('home.html', sql_book=sql_book, apple=apple, lower_limit = str(lower_limit))
         
 
 
@@ -128,11 +136,7 @@ def orders():
         return render_template('/order_history.html', result = result)
     
 
-@app.route('/')
-def index():
-    sql_book = Pages_info.query.with_entities(Pages_info.book_url, Pages_info.star_url).all()
-    apple = logged_out_user.query.with_entities(logged_out_user.email).all()
-    return render_template('home.html', sql_book=sql_book, apple=apple)
+
 
 
 
@@ -175,12 +179,16 @@ def about_us_page():
     return render_template('about_us.html')
 
 
-# @app.route('/contact_us')
-# def about_us_page():
-#     return render_template('about_us.html')
+@app.route('/contact_us')
+def contact_us_page():
+    return render_template('contact_us.html')
 
 
-
+@app.route('/update', methods=['POST'])
+def update_count():
+    global lower_limit  # Access the global variable
+    lower_limit += 1
+    return render_template ("home.html", lower_limit = str(lower_limit)) 
 
 
 # # To get all of the book data at once - Matt 9/15/2023

@@ -161,6 +161,7 @@ body {
 }
 
 /* Style the pagination buttons */
+#prev-button,
 #next-button {
     padding: 10px 20px; /* Add padding for better button visibility */
     font-size: 16px; /* Adjust font size as needed */

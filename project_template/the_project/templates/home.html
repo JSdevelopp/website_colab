@@ -40,44 +40,44 @@
     <div class="large-box" id="book-container">
         
     </div>
-    <!-- {% if current_user.is_authenticated %}
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('orders') }}">Order History</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-    </li>
-    {% else %}
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-    </li>
-    {% endif %} -->
+    {% if lower_limit == "0" %}
     <!-- Pagination buttons -->
     <div class="pagination-wrapper">
-        <button id="next-button">Next</button>
+        <form action="/update" method="POST">
+            <button id="next-button">Next</button>
+        </form>
+        
     </div>
-
+    {% else %}
+    
+    <div class="pagination-wrapper">
+        <form action="/update" method="POST">
+            <button id="prev-button">Previous</button>
+            <button id="next-button">Next</button>
+        </form>
+        
+    </div>
+    {% endif %}
+    
+    
     <!-- Include the external JavaScript file -->
     <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 
     <!-- About us section-->
-    <section class="about-us">
-        <h2><a href="website-homepage.html">Home</a></h2>
+    <!-- <section class="about-us">
+        <h2><a href="{{ url_for('home')}}">Home</a></h2>
         <h2><a href="{{ url_for('about_us_page')}}">About Us</a></h2>
         <h2><a href="contact.html">Contact Us</a></h2>
-    </section>
+    </section> -->
 
     
  
 </body>
 
 <!-- Footer section-->
-<footer class="footer">
+<!-- <footer class="footer">
     &copy; 2023 The Best Bookstore. All rights reserved.
-</footer>
+</footer> -->
 
 
 
