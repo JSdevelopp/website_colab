@@ -28,7 +28,6 @@ async function fetchBooks() {
 
 
 
-
         for (const book of books) {
             const bookEntry = document.createElement("div");
             bookEntry.className = "book-entry";
@@ -39,6 +38,7 @@ async function fetchBooks() {
                     ${getStarRatingHTML(book.ratings)}
                 </div>
                 <p>Price: ${book.price}</p>
+                
                 ${book.stock > 0 ? `<p>${book.stock} in stock</p>` : '<p class="availability">Out of Stock</p>'}
                 ${book.stock > 0 ? '<button class="add-to-cart">Add to Cart</button>' : ''}
             `;
@@ -60,6 +60,7 @@ async function fetchBooks() {
                                     },
 
                                     body: JSON.stringify({
+                                        // titles: book.titles,
                                         image: book.image,
                                         stock: book.stock,
                                         ratings: book.ratings,

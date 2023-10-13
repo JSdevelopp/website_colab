@@ -5926,7 +5926,7 @@ titles_list = ['A Light in the Attic',
 for sample in range(len(url_list)):
     
     item = Pages_info(url = url_list[sample],
-                      titles = titles_list[sample]
+                      titles = titles_list[sample],
                       star_url = star_url_list[sample],
                       text = text_list[sample],
                       price = price_list[sample], 
