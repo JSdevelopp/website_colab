@@ -161,11 +161,12 @@ body {
 }
 
 /* Style the pagination buttons */
-#prev-button,
-#next-button {
-    padding: 10px 20px; /* Add padding for better button visibility */
+#next-button,
+#prev-button {
+    padding: 10px; /* Add padding for button visibility */
     font-size: 16px; /* Adjust font size as needed */
     margin: 0 10px; /* Add some horizontal spacing between the buttons */
+    width: 100px; /* Set a fixed width for both buttons */
 }
 
 .home {

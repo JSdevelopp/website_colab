@@ -17,6 +17,9 @@ async function fetchBooks() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+
+        bookContainer.innerHTML = '';
+
         const books = await response.json();
         while (bookContainer.firstChild) {
             bookContainer.removeChild(bookContainer.firstChild);
@@ -55,25 +58,25 @@ async function fetchBooks() {
             bookContainer.appendChild(bookEntry);
         }
 
-        const next123 = document.createElement("div");
-        next123.id = "next-button";
+        // const next123 = document.createElement("div");
+        // next123.id = "next-button";
 
-        const next123 = bookEntry.querySelector(".add-to-cart");
-            if (addToCartButton) {
-                addToCartButton.addEventListener("click", () => {
-                    if (book.stock > 0) {
-                        cartItems++;
-                        cartCount.textContent = cartItems;
-                        book.stock--;
-                        if (book.stock === 0) {
-                            bookEntry.querySelector(".availability").textContent = "Out of Stock";
-                            addToCartButton.remove();
-                        }
-                    } else {
-                        alert("This book is out of stock and cannot be added to the cart.");
-                    }
-                });
-            }
+        // const next123 = bookEntry.querySelector(".add-to-cart");
+            // if (addToCartButton) {
+            //     addToCartButton.addEventListener("click", () => {
+            //         if (book.stock > 0) {
+            //             cartItems++;
+            //             cartCount.textContent = cartItems;
+            //             book.stock--;
+            //             if (book.stock === 0) {
+            //                 bookEntry.querySelector(".availability").textContent = "Out of Stock";
+            //                 addToCartButton.remove();
+            //             }
+            //         } else {
+            //             alert("This book is out of stock and cannot be added to the cart.");
+            //         }
+            //     });
+            // }
 
     } catch (error) {
         console.error('Error fetching book data:', error);
@@ -94,18 +97,32 @@ fetchBooks();
         let currentPage = 1;
         const totalPages = 20; // Total number of pages we will have
 
-        // Get a reference to the "Next" button
-        const nextButton = document.getElementById("next-button");
+        // Create "Next" button
+const nextButton = document.createElement("button");
+nextButton.id = "next-button";
+nextButton.textContent = "Next";
 
-        // Add an event listener to the "Next button"
-        nextButton.addEventListener("click", () => {
-            // console.log(lowerLimit)
-            // console.log(upperLimit)
-            lowerLimit += 12
-            upperLimit += 12
-            fetchBooks()
-            
-        
-        })
+// Create "Previous" button
+const prevButton = document.createElement("button");
+prevButton.id = "prev-button";
+prevButton.textContent = "Previous";
 
-        
+// Append "Previous" and "Next" buttons to the container
+const paginationWrapper = document.querySelector(".pagination-wrapper");
+paginationWrapper.appendChild(prevButton);
+paginationWrapper.appendChild(nextButton);
+
+// Add event listeners for "Next" and "Previous" buttons
+nextButton.addEventListener("click", () => {
+    lowerLimit += 12;
+    upperLimit += 12;
+    fetchBooks();
+});
+
+prevButton.addEventListener("click", () => {
+    if (lowerLimit >= 12) {
+        lowerLimit -= 12;
+        upperLimit -= 12;
+        fetchBooks();
+    }
+});

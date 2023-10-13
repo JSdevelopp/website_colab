@@ -7,7 +7,7 @@ from the_project.forms import CheckoutForm, RegistrationForm, LoginForm
 from sqlalchemy.exc import SQLAlchemyError
 from the_project.models import Pages_info, logged_out_user
 lower_limit = 0
-
+upper_limit = 12
 # # @app.route('/')
 # def index():
 #     sql_book = Pages_info.query.with_entities(Pages_info.book_url, Pages_info.star_url).all()
@@ -150,7 +150,7 @@ def get_books():
         # offset = int(request.args.get('offset', lower_limit))  # Default to 0 if 'offset' is not provided
 
         lower_limit = int(request.args.get('lower_limit', 0))  # Default lower limit to 0 if not provided
-        upper_limit = int(request.args.get('upper_limit', 20))  # Default upper limit to 20 if not provided
+        upper_limit = int(request.args.get('upper_limit', 12))  # Default upper limit to 20 if not provided
 
         # Query the database to get book information within the specified range
         books = Pages_info.query.offset(lower_limit).limit(upper_limit - lower_limit)
