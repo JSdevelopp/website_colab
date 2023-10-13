@@ -70,7 +70,12 @@
         <h2><a href="contact.html">Contact Us</a></h2>
     </section> -->
 
-    
+    <h2>The cart</h2>
+<ul>
+    {%for item in cart_items%}
+    <li>{{item}}</li>
+    {%endfor%}
+</ul>
  
 </body>
 

@@ -53,6 +53,11 @@
 </form>
 
 
-
+<h2>The cart</h2>
+<ul>
+    {%for item in cart_items%}
+    <li>{{item}}</li>
+    {%endfor%}
+</ul>
 
 {% endblock content %}

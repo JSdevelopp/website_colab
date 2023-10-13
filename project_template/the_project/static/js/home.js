@@ -24,6 +24,11 @@ async function fetchBooks() {
         while (bookContainer.firstChild) {
             bookContainer.removeChild(bookContainer.firstChild);
         }
+
+
+
+
+
         for (const book of books) {
             const bookEntry = document.createElement("div");
             bookEntry.className = "book-entry";
@@ -39,9 +44,39 @@ async function fetchBooks() {
             `;
 
             const addToCartButton = bookEntry.querySelector(".add-to-cart");
+
+
+            
             if (addToCartButton) {
                 addToCartButton.addEventListener("click", () => {
                     if (book.stock > 0) {
+                        addToCart(book)
+                        async function addToCart(book) {
+                            try {
+                                const response = await fetch('/add_to_cart', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+
+                                    body: JSON.stringify({
+                                        image: book.image,
+                                        stock: book.stock,
+                                        ratings: book.ratings,
+                                        price: book.price
+                                    })
+                                });
+                        
+                                if (!response.ok) {
+                                    throw new Error('Failed to add book to cart');
+                                }
+                        
+                                const data = await response.json();
+                                console.log(data.message);
+                            } catch (error) {
+                                console.error('Error:', error);
+                            }
+                        }
                         cartItems++;
                         cartCount.textContent = cartItems;
                         book.stock--;
@@ -54,6 +89,59 @@ async function fetchBooks() {
                     }
                 });
             }
+
+
+            // async function addToCart(book) {
+            //     try {
+            //         const response = await fetch('/add_to_cart', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/json'
+            //             },
+            //             body: JSON.stringify({
+            //                 book_id: book.id,
+            //                 title: book.title,
+            //                 image: book.image,
+            //                 ratings: book.ratings,
+            //                 price: book.price
+            //             })
+            //         });
+            
+            //         if (!response.ok) {
+            //             throw new Error('Failed to add book to cart');
+            //         }
+            
+            //         const data = await response.json();
+            //         console.log(data.message);
+            //     } catch (error) {
+            //         console.error('Error:', error);
+            //     }
+            // }
+
+
+
+
+
+
+
+
+
+            // if (addToCartButton) {
+            //     addToCartButton.addEventListener("click", () => {
+            //         if (book.stock > 0) {
+
+            //             cartItems++;
+            //             cartCount.textContent = cartItems;
+            //             book.stock--;
+            //             if (book.stock === 0) {
+            //                 bookEntry.querySelector(".availability").textContent = "Out of Stock";
+            //                 addToCartButton.remove();
+            //             }
+            //         } else {
+            //             alert("This book is out of stock and cannot be added to the cart.");
+            //         }
+            //     });
+            // }
 
             bookContainer.appendChild(bookEntry);
         }
@@ -125,4 +213,12 @@ prevButton.addEventListener("click", () => {
         upperLimit -= 12;
         fetchBooks();
     }
+
+
+const add_to_cart = document.createElement("button");
+add_to_cart.className = "add-to-cart";
+add_to_cart.addEventListener("click", () => {
+        
+        console.log('this is working')
+    });
 });
