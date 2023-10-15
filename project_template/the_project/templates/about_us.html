@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %} {{ super() }}
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Our Story</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/about_us.css') }}">
+
+</head>
+<body>
+
+    <!-- Header section with the dropdown menu -->
+    <div class="header">
+        <div class="dropdown">
+            <button class="dropbtn">Menu</button>
+            <!-- Dropdown content -->
+            <div class="dropdown-content">
+                <a href="#">Home</a>
+                <a href="#">Genres</a>
+                <a href="#">Authors</a>
+                <!-- Add more links as needed -->
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Our Story</h1> 
+    </div>
+
+    <!-- Large box in the middle of the screen -->
+    <div class="large-box"></div>
+
+
+
+
+
+
+
+
+
+
+    <!-- About us section-->
+    <!-- <section class="about-us">
+        <h2><a href="website-homepage.html">Home</a></h2>
+        <h2><a href="{{ url_for('about_us_page')}}">About Us</a></h2>
+        <h2><a href="contact.html">Contact Us</a></h2>
+    </section> -->
+
+    <!-- Footer section-->
+    <!-- <footer class="footer">
+        &copy; 2023 The Best Bookstore. All rights reserved.
+    </footer> -->
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+{% endblock content %}

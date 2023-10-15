@@ -98,18 +98,17 @@ body {
     margin: 100px;
 }
 
-/* Styling for the large box */
+/* Adjust the styling for the book container */
 .large-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    overflow: hidden; /* Prevent overflow */
-
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Create a flexible grid */
+    gap: 20px; /* Adjust the gap between books */
+    justify-content: center; /* Center-align the grid items horizontally */
+    padding: 20px; /* Add padding to the container */
+    max-width: 100%; /* Ensure the container fits within its parent */
 }
+
+
 
 .large-box h2 {
     font-size: 36px;
@@ -137,33 +136,23 @@ body {
     background-color: #0056b3;
 }
 
-/* Styling for the book entries */
+/* Adjust the styling for individual book entries */
 .book-entry {
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    /* Remove any existing styles that affect width */
     border: 1px solid #ddd;
-    margin: 10px;
-    background-color: #f9f9f9;
-    text-align: center;  */
-    display: grid;
-    grid-template-columns: auto;
-    align-items: center;
-    justify-items: center;
-    max-width: 250px; 
-    border: 1px solid #ddd;
-    margin: 10px;
     background-color: #f9f9f9;
     text-align: center;
-
+    padding: 20px; /* Add padding to each book entry */
 }
 
 .book-entry img {
-    max-width: 100px;
-    height: auto;
-    margin-bottom: 10px;
+    max-width: 100%; /* Ensure images fit within the container */
+    height: 150px; /* Changed to 150px instead of Auto. - Matt 9/18/2023 */
+    width: 100px ; /* Set a fixed width for book images */
+    max-height: 200px; /* Set a maximum height for book images, adjust as needed */
 }
+
+
 
 /* Center the pagination wrapper */
 .pagination-wrapper {
@@ -172,10 +161,12 @@ body {
 }
 
 /* Style the pagination buttons */
-#next-button {
-    padding: 10px 20px; /* Add padding for better button visibility */
+#next-button,
+#prev-button {
+    padding: 10px; /* Add padding for button visibility */
     font-size: 16px; /* Adjust font size as needed */
     margin: 0 10px; /* Add some horizontal spacing between the buttons */
+    width: 100px; /* Set a fixed width for both buttons */
 }
 
 .home {

@@ -5,6 +5,8 @@ from wtforms import ValidationError
 from wtforms.validators import NumberRange, Email,Length
 
 # Added Length, validators library from wtforms
+from the_project.models import Registered_user
+
 
 
 
