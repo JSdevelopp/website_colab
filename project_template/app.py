@@ -67,7 +67,7 @@ def checkout():
             db.session.commit()
     if 'cart' in session:
         cart_items = session.get('cart', [])
-        return render_template('checkout.html', form = form, cart_items = cart_items)
+        return render_template('checkout.html', form = form, session_cart = cart_items)
 
     return render_template('checkout.html', form = form)
 

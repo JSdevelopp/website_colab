@@ -72,7 +72,7 @@
 
     <h2>The cart</h2>
 <ul>
-    {%for item in cart_items%}
+    {%for item in session_cart%}
     <li>{{item}}</li>
     {%endfor%}
 </ul>

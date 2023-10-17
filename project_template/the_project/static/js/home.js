@@ -29,7 +29,7 @@ async function fetchBooks() {
 
 
         for (const book of books) {
-            const bookEntry = document.createElement("div");
+            let bookEntry = document.createElement("div");
             bookEntry.className = "book-entry";
 
             bookEntry.innerHTML = `
@@ -78,6 +78,8 @@ async function fetchBooks() {
                                 console.error('Error:', error);
                             }
                         }
+                        // Call fetchCartData to retrieve and display the cart data
+                        fetchCartData(bookEntry);
                         cartItems++;
                         cartCount.textContent = cartItems;
                         book.stock--;
@@ -174,41 +176,39 @@ async function fetchBooks() {
 
 fetchBooks();
 
-async function fetchCartData() {
+async function fetchCartData(bookEntry) {
     try {
         const response = await fetch('/cart_data');
-
+        
         if (!response.ok) {
             throw new Error('Failed to fetch cart data');
         }
 
-        const cartData = await response.json();
-
+        const session_cart = await response.json();
+        
         // Process the cart data as needed
-        displayCart(cartData);
+        displayCart(session_cart, bookEntry);
     } catch (error) {
         console.error('Error fetching cart data:', error);
     }
 }
 
-function displayCart(cart_items) {
-    const cartDisplay = document.getElementById('cart-display');
-    cartDisplay.innerHTML = '';
-    count = 0
-    for (const item of cart_items) {
-        console.log(item.price)
+function displayCart(session_cart,bookEntry) {
+    
+    console.log(session_cart)
+
+    for (const item of session_cart) {
+        console.log("hello")
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
             <p>${item.stock}</p>
-            <p>Price: $${item.price.toFixed(2)}</p>
         `;
-        cartDisplay.appendChild(cartItem);
+        bookEntry.appendChild(cartItem);
     }
 }
 
-// Call fetchCartData to retrieve and display the cart data
-fetchCartData();
+
 
         // Function to generate star rating HTML
         function getStarRatingHTML(ratings) {
