@@ -73,7 +73,7 @@ async function fetchBooks() {
                                 }
                         
                                 const data = await response.json();
-                                console.log(data.message);
+                                // console.log(data.message);
                             } catch (error) {
                                 console.error('Error:', error);
                             }
@@ -174,6 +174,41 @@ async function fetchBooks() {
 
 fetchBooks();
 
+async function fetchCartData() {
+    try {
+        const response = await fetch('/cart_data');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch cart data');
+        }
+
+        const cartData = await response.json();
+
+        // Process the cart data as needed
+        displayCart(cartData);
+    } catch (error) {
+        console.error('Error fetching cart data:', error);
+    }
+}
+
+function displayCart(cart_items) {
+    const cartDisplay = document.getElementById('cart-display');
+    cartDisplay.innerHTML = '';
+    count = 0
+    for (const item of cart_items) {
+        console.log(item.price)
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+            <p>${item.stock}</p>
+            <p>Price: $${item.price.toFixed(2)}</p>
+        `;
+        cartDisplay.appendChild(cartItem);
+    }
+}
+
+// Call fetchCartData to retrieve and display the cart data
+fetchCartData();
 
         // Function to generate star rating HTML
         function getStarRatingHTML(ratings) {

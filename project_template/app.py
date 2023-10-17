@@ -27,6 +27,7 @@ def home():
 
     if 'cart' in session:
         cart_items = session.get('cart', [])
+        global_cart_items = cart_items
         return render_template('home.html', sql_book=sql_book, apple=apple, lower_limit = str(lower_limit), cart_items = cart_items)
 
 
@@ -245,6 +246,17 @@ def add_to_cart():
         return jsonify({'message': 'Book added to cart', 'book': book_details})
 
     return jsonify({'message': 'No book ID provided'}), 400
+
+
+
+@app.route('/cart_data')
+def get_cart_data():
+    if 'cart' in session:
+        cart_items = session.get('cart', [])
+        return jsonify(cart_items)
+    if 'cart' not in session:
+        session['cart'] = []
+        return jsonify(cart_items)
 
 
 # # To get all of the book data at once - Matt 9/15/2023
