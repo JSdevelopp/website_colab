@@ -1,6 +1,7 @@
 // Replace the existing code that defines the books array with an AJAX request
 
 const bookContainer = document.getElementById("book-container");
+const cartContainer = document.getElementById("cart-container");
 const cartButton = document.getElementById("cart-button");
 const cartCount = document.getElementById("cart-count");
 
@@ -37,6 +38,7 @@ async function fetchBooks() {
                 <div class="ratings">
                     ${getStarRatingHTML(book.ratings)}
                 </div>
+                <p>${book.title}</p>
                 <p>Price: ${book.price}</p>
                 
                 ${book.stock > 0 ? `<p>${book.stock} in stock</p>` : '<p class="availability">Out of Stock</p>'}
@@ -90,6 +92,8 @@ async function fetchBooks() {
                     } else {
                         alert("This book is out of stock and cannot be added to the cart.");
                     }
+                    // After adding to cart, update the cart display
+                    updateCartDisplay();
                 });
             }
 
@@ -174,6 +178,13 @@ async function fetchBooks() {
     }
 }
 
+function updateCartDisplay() {
+    cartContainer.innerHTML = ''; // Clear the cart container
+
+    // Fetch and display the updated cart items
+    displayCart(cart); // Pass the cart array to displayCart
+}
+
 fetchBooks();
 
 async function fetchCartData(bookEntry) {
@@ -193,18 +204,20 @@ async function fetchCartData(bookEntry) {
     }
 }
 
-function displayCart(session_cart,bookEntry) {
-    
-    console.log(session_cart)
+function displayCart(cart) {
+    cartContainer.innerHTML = ''; // Clear the cart container
 
-    for (const item of session_cart) {
-        console.log("hello")
-        const cartItem = document.createElement('div');
+    for (const book of cart) {
+        const cartItem = document.createElement("div");
         cartItem.className = 'cart-item';
+
         cartItem.innerHTML = `
-            <p>${item.stock}</p>
+            <img src="${book.image}" alt="${book.title}">
+            <p>${book.title}</p>
+            <p>Price: ${book.price}</p>
         `;
-        bookEntry.appendChild(cartItem);
+
+        cartContainer.appendChild(cartItem);
     }
 }
 

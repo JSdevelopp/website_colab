@@ -194,7 +194,8 @@ def get_books():
                 'title': book.text,
                 'ratings': 5,  # You might want to modify this if you have book ratings in your database
                 'price': f"${book.price_dollars}",
-                'stock': book.quantity_count
+                'stock': book.quantity_count, 
+                'title' : book.titles
             })
 
         return jsonify(book_data)
