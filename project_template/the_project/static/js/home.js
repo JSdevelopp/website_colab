@@ -60,13 +60,12 @@ async function fetchBooks() {
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
-
                                     body: JSON.stringify({
-                                        // titles: book.titles,
                                         image: book.image,
                                         stock: book.stock,
                                         ratings: book.ratings,
-                                        price: book.price
+                                        price: book.price,
+                                        title: book.title // Add the 'title' key to the JSON data
                                     })
                                 });
                         

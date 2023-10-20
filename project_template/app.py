@@ -71,9 +71,10 @@ def checkout():
 
         cart_items_count = len(cart_items)
         
-        print("Cart items count: ", cart_items_count)
-        
+        # print("Cart items count: ", cart_items_count)
+        print("\n\n\n\n")
         print("Session:",session)
+        print("\n\n\n\n")
         return render_template('checkout.html', form = form, cart_items = cart_items,cart_items_count = cart_items_count)
 
     
@@ -200,7 +201,6 @@ def get_books():
         for book in books:
             book_data.append({
                 'image': book.book_url,
-                'title': book.text,
                 'ratings': 5,  # You might want to modify this if you have book ratings in your database
                 'price': f"${book.price_dollars}",
                 'stock': book.quantity_count, 
@@ -237,7 +237,19 @@ def add_to_cart():
     ratings = data.get('ratings')
     price = data.get('price')
     
-    print(data)
+    title = data.get('title') 
+    print("\n")
+    print("\n")
+    print("\n")
+    for key in data:
+        print(key)
+    print('the    dsafdsafasdfasdf     sesson')
+    session_data = dict(session)
+    
+    print(session_data)
+    print("\n")
+    print("\n")
+    print("\n")
 
     if image:
         if 'cart' not in session:
@@ -247,7 +259,8 @@ def add_to_cart():
             "image": image,
             "stock": stock,
             "ratings": ratings,
-            "price": price
+            "price": price,
+            "title": title
     
         }
         session['cart'].append(book_details)
