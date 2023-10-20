@@ -36,6 +36,7 @@ def home():
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
+    print("Session at the start of checkout:", session)
 
     form = CheckoutForm()
 
@@ -66,7 +67,12 @@ def checkout():
             db.session.commit()
     if 'cart' in session:
         cart_items = session.get('cart', [])
-        return render_template('checkout.html', form = form, cart_items = cart_items)
+        cart_items_count = len(cart_items)
+        
+        print("Cart items count: ", cart_items_count)
+        
+        print("Session:",session)
+        return render_template('checkout.html', form = form, cart_items = cart_items,cart_items_count = cart_items_count)
 
     return render_template('checkout.html', form = form)
 
