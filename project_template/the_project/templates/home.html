@@ -36,6 +36,8 @@
     <!-- Large box in the middle of the screen to hold book entries -->
     <div class="large-box" id="book-container"></div>
 
+    <div id="cart-container" class="cart-container"></div>
+
     <!-- Large box in the middle of the screen to hold book entries -->
     <!-- <div class="large-box" id="book-container">
         
@@ -72,7 +74,7 @@
 
     <h2>The cart</h2>
 <ul>
-    {%for item in cart_items%}
+    {%for item in session_cart%}
     <li>{{item}}</li>
     {%endfor%}
 </ul>
