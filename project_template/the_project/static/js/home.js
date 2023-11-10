@@ -1,6 +1,7 @@
 // Replace the existing code that defines the books array with an AJAX request
 
 const bookContainer = document.getElementById("book-container");
+const cartContainer = document.getElementById("cart-container");
 const cartButton = document.getElementById("cart-button");
 const cartCount = document.getElementById("cart-count");
 
@@ -29,7 +30,7 @@ async function fetchBooks() {
 
 
         for (const book of books) {
-            const bookEntry = document.createElement("div");
+            let bookEntry = document.createElement("div");
             bookEntry.className = "book-entry";
 
             bookEntry.innerHTML = `
@@ -37,6 +38,7 @@ async function fetchBooks() {
                 <div class="ratings">
                     ${getStarRatingHTML(book.ratings)}
                 </div>
+                <p>${book.title}</p>
                 <p>Price: ${book.price}</p>
                 
                 ${book.stock > 0 ? `<p>${book.stock} in stock</p>` : '<p class="availability">Out of Stock</p>'}
@@ -58,13 +60,12 @@ async function fetchBooks() {
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
-
                                     body: JSON.stringify({
-                                        // titles: book.titles,
                                         image: book.image,
                                         stock: book.stock,
                                         ratings: book.ratings,
-                                        price: book.price
+                                        price: book.price,
+                                        title: book.title // Add the 'title' key to the JSON data
                                     })
                                 });
                         
@@ -73,11 +74,13 @@ async function fetchBooks() {
                                 }
                         
                                 const data = await response.json();
-                                console.log(data.message);
+                                // console.log(data.message);
                             } catch (error) {
                                 console.error('Error:', error);
                             }
                         }
+                        // Call fetchCartData to retrieve and display the cart data
+                        fetchCartData(bookEntry);
                         cartItems++;
                         cartCount.textContent = cartItems;
                         book.stock--;
@@ -88,6 +91,8 @@ async function fetchBooks() {
                     } else {
                         alert("This book is out of stock and cannot be added to the cart.");
                     }
+                    // After adding to cart, update the cart display
+                    updateCartDisplay();
                 });
             }
 
@@ -172,7 +177,49 @@ async function fetchBooks() {
     }
 }
 
+function updateCartDisplay() {
+    cartContainer.innerHTML = ''; // Clear the cart container
+
+    // Fetch and display the updated cart items
+    displayCart(cart); // Pass the cart array to displayCart
+}
+
 fetchBooks();
+
+async function fetchCartData(bookEntry) {
+    try {
+        const response = await fetch('/cart_data');
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch cart data');
+        }
+
+        const session_cart = await response.json();
+        
+        // Process the cart data as needed
+        displayCart(session_cart, bookEntry);
+    } catch (error) {
+        console.error('Error fetching cart data:', error);
+    }
+}
+
+function displayCart(cart) {
+    cartContainer.innerHTML = ''; // Clear the cart container
+
+    for (const book of cart) {
+        const cartItem = document.createElement("div");
+        cartItem.className = 'cart-item';
+
+        cartItem.innerHTML = `
+            <img src="${book.image}" alt="${book.title}">
+            <p>${book.title}</p>
+            <p>Price: ${book.price}</p>
+        `;
+
+        cartContainer.appendChild(cartItem);
+    }
+}
+
 
 
         // Function to generate star rating HTML

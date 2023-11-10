@@ -27,6 +27,7 @@ def home():
 
     if 'cart' in session:
         cart_items = session.get('cart', [])
+        global_cart_items = cart_items
         return render_template('home.html', sql_book=sql_book, apple=apple, lower_limit = str(lower_limit), cart_items = cart_items)
 
 
@@ -67,12 +68,16 @@ def checkout():
             db.session.commit()
     if 'cart' in session:
         cart_items = session.get('cart', [])
+
         cart_items_count = len(cart_items)
         
-        print("Cart items count: ", cart_items_count)
-        
+        # print("Cart items count: ", cart_items_count)
+        print("\n\n\n\n")
         print("Session:",session)
+        print("\n\n\n\n")
         return render_template('checkout.html', form = form, cart_items = cart_items,cart_items_count = cart_items_count)
+
+    
 
     return render_template('checkout.html', form = form)
 
@@ -196,10 +201,10 @@ def get_books():
         for book in books:
             book_data.append({
                 'image': book.book_url,
-                'title': book.text,
                 'ratings': 5,  # You might want to modify this if you have book ratings in your database
                 'price': f"${book.price_dollars}",
-                'stock': book.quantity_count
+                'stock': book.quantity_count, 
+                'title' : book.titles
             })
 
         return jsonify(book_data)
@@ -232,7 +237,20 @@ def add_to_cart():
     ratings = data.get('ratings')
     price = data.get('price')
     
-    print(data)
+    title = data.get('title') 
+    print("\n")
+    print("\n")
+    print("\n")
+    # session.clear()
+    for key in data:
+        print(key)
+    print('the    dsafdsafasdfasdf     sesson')
+    session_data = dict(session)
+    
+    print(session_data)
+    print("\n")
+    print("\n")
+    print("\n")
 
     if image:
         if 'cart' not in session:
@@ -242,7 +260,8 @@ def add_to_cart():
             "image": image,
             "stock": stock,
             "ratings": ratings,
-            "price": price
+            "price": price,
+            "title": title
     
         }
         session['cart'].append(book_details)
@@ -251,6 +270,17 @@ def add_to_cart():
         return jsonify({'message': 'Book added to cart', 'book': book_details})
 
     return jsonify({'message': 'No book ID provided'}), 400
+
+
+
+@app.route('/cart_data')
+def get_cart_data():
+    if 'cart' in session:
+        cart_items = session.get('cart', [])
+        return jsonify(cart_items)
+    if 'cart' not in session:
+        session['cart'] = []
+        return jsonify(cart_items)
 
 
 # # To get all of the book data at once - Matt 9/15/2023
