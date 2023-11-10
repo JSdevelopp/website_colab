@@ -189,21 +189,34 @@ fetchBooks();
 async function fetchCartData(bookEntry) {
     try {
         const response = await fetch('/cart_data');
-        
+
         if (!response.ok) {
             throw new Error('Failed to fetch cart data');
         }
 
         const session_cart = await response.json();
-        
+
         // Process the cart data as needed
         displayCart(session_cart, bookEntry);
+
+        // Add event listener for "Delete from Cart" button
+        const deleteButtons = document.querySelectorAll(".delete-from-cart");
+
+        deleteButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const bookTitle = button.parentElement.querySelector("p").textContent;
+                const book = { title: bookTitle }; // You may need additional data for identification
+                removeFromCart(book, bookEntry);
+            });
+        });
     } catch (error) {
         console.error('Error fetching cart data:', error);
     }
 }
 
-function displayCart(cart) {
+
+
+function displayCart(cart, bookEntry) {
     cartContainer.innerHTML = ''; // Clear the cart container
 
     for (const book of cart) {
@@ -214,11 +227,49 @@ function displayCart(cart) {
             <img src="${book.image}" alt="${book.title}">
             <p>${book.title}</p>
             <p>Price: ${book.price}</p>
+            <button class="delete-from-cart">Delete from Cart</button>
         `;
+
+        const deleteButton = cartItem.querySelector(".delete-from-cart");
+
+        if (deleteButton) {
+            deleteButton.addEventListener("click", () => {
+                removeFromCart(book, bookEntry);
+            });
+        }
 
         cartContainer.appendChild(cartItem);
     }
 }
+
+
+// Function to remove a book from the cart
+async function removeFromCart(book, bookEntry) {
+    try {
+        const response = await fetch('/remove_from_cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: book.title // Add any other necessary data for identification
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to remove book from cart');
+        }
+
+        const data = await response.json();
+        // console.log(data.message);
+
+        // Update the cart display after removing from the cart
+        fetchCartData(bookEntry);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 
 
 
