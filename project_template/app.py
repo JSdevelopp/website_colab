@@ -241,6 +241,7 @@ def add_to_cart():
     print("\n")
     print("\n")
     print("\n")
+    # session.clear()
     for key in data:
         print(key)
     print('the    dsafdsafasdfasdf     sesson')
