@@ -308,8 +308,13 @@
 }
 
 .book-item img {
+  /* This is the original book dimensions from the home page */
+  width: 99px; /* Setting the width */
+  height: 155px; /* Setting the height */
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* A subtle shadow for the book images */
+  /* Fit image dimension within the given dimensions without stretching */
+  object-fit: cover;
 }
 
 .bag-content h2,

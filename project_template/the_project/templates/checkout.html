@@ -409,7 +409,7 @@
           <div class="bag-content">
             <h3 id="your-bag-text">Your bag</h3>
 
-            <!-- Will add a dynamic book quantity here -->
+            <!-- Will add a dynamic book quantity here... How do I  grab the quatity of books now? -->
 
             <h2 id="users-current-book-count">3 items</h2>
           </div>
@@ -423,7 +423,7 @@
       <div class="books-list-container">
         <div class="book-item d-flex mb-3">
           <img
-            src="/client/assets/bookcoverExamples/TheGreatGatsbyBook.jpg"
+            src="/static/assets/bookcoverExamples/TheGreatGatsbyBook.jpg"
             alt="Book Title"
             class="mr-3 book-cover"
           />
@@ -436,11 +436,12 @@
           </div>
         </div>
 
-        <!-- ... Assume more book items are listed ... -->
+        <!-- ... Assume more book items are listed ...  How do I grab the books now from the state?-->
 
+        
         <div class="book-item d-flex mb-3">
           <img
-            src="/client/assets/bookcoverExamples/ToKillAMockingBirdBookCover.webp"
+            src="/static/assets/bookcoverExamples/ToKillAMockingBirdBookCover.webp"
             alt="Book Title"
             class="mr-3 book-cover"
           />
@@ -455,7 +456,7 @@
 
         <div class="book-item d-flex mb-3">
           <img
-            src="/client/assets/bookcoverExamples/mapsOfmeaningCover.webp"
+            src="/static/assets/bookcoverExamples/mapsOfmeaningCover.webp"
             alt="Book Title"
             class="mr-3 book-cover"
           />
@@ -491,9 +492,8 @@
         <div class="grand-total-container">
           <h4>Grand Total: $X.XX</h4>
           <!-- Continue button -->
-          <button id="processOrderButton" class="btn btn-success mt-3">
-            Checkout
-          </button>
+          {{ form.submit(class="btn btn-success mt-3", id="processOrderButton", label="Checkout") }}
+
         </div>
       </div>
     </div>
@@ -507,7 +507,5 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   {% endblock content %} {{form.hidden_tag()}}
-  {{form.payment_type.label}}{{form.payment_type()}}
-
-   {{form.submit()}}
+  
 </div>
