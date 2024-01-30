@@ -115,10 +115,13 @@
   height: 40px; /* adjust to make logos bigger or smaller */
   width: auto; /* maintains aspect ratio */
 }
+* {
+  box-sizing: border-box;
+}
 
 .leftSection,
 .rightSection {
-  padding-top: 60px;
+  padding-right: 0px;
 }
 /* Dividers and sections */
 .leftSection {

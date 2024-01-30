@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block styles %} {{ super() }}
-<!-- Your checkout page specific styles -->
+<!-- Checkout page specific styles -->
 <link
   rel="stylesheet"
   type="text/css"
@@ -409,9 +409,18 @@
           <div class="bag-content">
             <h3 id="your-bag-text">Your bag</h3>
 
-            <!-- Will add a dynamic book quantity here... How do I  grab the quatity of books now? -->
+            <!-- Will add a dynamic book quantity here... How do I  grab the quantity of books now? -->
 
-            <h2 id="users-current-book-count">3 items</h2>
+            <h2 id="users-current-book-count">
+              <!-- {{cart_items_count}} -->
+              {% if cart_items_count > 1 %} 
+                {{cart_items_count}} items
+                
+               {% else %}
+                {{cart_items_count}} item
+                {% endif %}
+              
+              </h2>
           </div>
         </div>
 
@@ -421,53 +430,29 @@
       <!-- Each book's details -->
 
       <div class="books-list-container">
+       
+        {% for book in cart_items %}
+        <!-- The book price is a string, so you need to make it a float integer for rounding/parsing/adding -->
+       {% set book_price = book.price|replace("$", "")|replace(",", "")|float %}
         <div class="book-item d-flex mb-3">
+          
           <img
-            src="/static/assets/bookcoverExamples/TheGreatGatsbyBook.jpg"
-            alt="Book Title"
+            src="{{book.image}}"
+            alt="Book Image"
             class="mr-3 book-cover"
           />
           <div>
-            <h5>Book Title</h5>
+            <!-- Missing title, author name, and ISBN -->
+            <h5>"{{book.title}}"</h5>
             <p>Author: Author Name</p>
             <p>ISBN: xxxxxxxxxxxx</p>
-            <p>Price: $X.XX</p>
+            <p>Price: ${{"%.2f"|format(book_price)}}</p>
             <p>Quantity: 1</p>
           </div>
         </div>
-
-        <!-- ... Assume more book items are listed ...  How do I grab the books now from the state?-->
+        {% endfor %}
 
         
-        <div class="book-item d-flex mb-3">
-          <img
-            src="/static/assets/bookcoverExamples/ToKillAMockingBirdBookCover.webp"
-            alt="Book Title"
-            class="mr-3 book-cover"
-          />
-          <div>
-            <h5>Book Title</h5>
-            <p>Author: Author Name</p>
-            <p>ISBN: xxxxxxxxxxxx</p>
-            <p>Price: $X.XX</p>
-            <p>Quantity: 1</p>
-          </div>
-        </div>
-
-        <div class="book-item d-flex mb-3">
-          <img
-            src="/static/assets/bookcoverExamples/mapsOfmeaningCover.webp"
-            alt="Book Title"
-            class="mr-3 book-cover"
-          />
-          <div>
-            <h5>Book Title</h5>
-            <p>Author: Author Name</p>
-            <p>ISBN: xxxxxxxxxxxx</p>
-            <p>Price: $X.XX</p>
-            <p>Quantity: 1</p>
-          </div>
-        </div>
       </div>
 
       <hr class="horizontalLine" />
@@ -485,12 +470,33 @@
 
       <!-- Order Totals -->
       <div class="order-totals mt-5">
-        <p>Subtotal: $X.XX</p>
-        <p>Set Savings: $X.XX</p>
-        <p>Tax: $X.XX</p>
-        <p>Shipping: $X.XX</p>
+        <!-- Sub total -->
+        {% set ns = namespace(subtotal = 0) %}
+        {% for book in cart_items %}
+       
+          {% set ns.subtotal = ns.subtotal + book.price|replace("$", "")|replace(",", "")|float %}
+        {% endfor %}  
+        
+        <!-- Tax, Shipping, Grand total -->
+        {% set tax = ns.subtotal * 0.05 %}
+        <!-- Shipping to be $5 if less than $100 else it's free shipping -->
+        {% set shipping = 5.00 if ns.subtotal < 100 else 0.00 %}
+
+        <!--  3.50 savings if over 20 else 0-->
+        {% set savings = 3.50 if ns.subtotal > 20 else 0.00 %}
+
+
+        {% set grand_total = ns.subtotal + tax + shipping - savings %}
+
+
+
+
+        <p>Subtotal: ${{"%.2f"|format(ns.subtotal)}}</p>
+        <p>Set Savings: ${{"%.2f"|format(savings)}}</p>
+        <p>Tax: ${{"%.2f"|format(tax)}}</p>
+        <p>Shipping: ${{"%.2f"|format(shipping)}}</p>
         <div class="grand-total-container">
-          <h4>Grand Total: $X.XX</h4>
+          <h4>Grand Total: ${{"%.2f"|format(grand_total)}}</h4>
           <!-- Continue button -->
           {{ form.submit(class="btn btn-success mt-3", id="processOrderButton", label="Checkout") }}
 

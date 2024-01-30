@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: f0f30cfbab8c
+Revision ID: 343af16885e6
 Revises: 
-Create Date: 2023-09-08 12:49:35.745734
+Create Date: 2023-10-13 15:42:38.635145
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f0f30cfbab8c'
+revision = '343af16885e6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('book_url', sa.String(length=128), nullable=True),
     sa.Column('star_url', sa.String(length=128), nullable=True),
+    sa.Column('titles', sa.String(length=128), nullable=True),
     sa.Column('text', sa.String(length=128), nullable=True),
     sa.Column('price_dollars', sa.Float(), nullable=True),
     sa.Column('quantity_count', sa.Integer(), nullable=True),
@@ -31,6 +32,21 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_books_book_url'), ['book_url'], unique=True)
         batch_op.create_index(batch_op.f('ix_books_star_url'), ['star_url'], unique=False)
         batch_op.create_index(batch_op.f('ix_books_text'), ['text'], unique=False)
+        batch_op.create_index(batch_op.f('ix_books_titles'), ['titles'], unique=False)
+
+    op.create_table('cart',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('book_url', sa.String(length=128), nullable=True),
+    sa.Column('star_url', sa.String(length=128), nullable=True),
+    sa.Column('text', sa.String(length=128), nullable=True),
+    sa.Column('price_dollars', sa.Float(), nullable=True),
+    sa.Column('quantity_count', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    with op.batch_alter_table('cart', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_cart_book_url'), ['book_url'], unique=True)
+        batch_op.create_index(batch_op.f('ix_cart_star_url'), ['star_url'], unique=False)
+        batch_op.create_index(batch_op.f('ix_cart_text'), ['text'], unique=False)
 
     op.create_table('customer',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -73,7 +89,14 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_customer_email'))
 
     op.drop_table('customer')
+    with op.batch_alter_table('cart', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_cart_text'))
+        batch_op.drop_index(batch_op.f('ix_cart_star_url'))
+        batch_op.drop_index(batch_op.f('ix_cart_book_url'))
+
+    op.drop_table('cart')
     with op.batch_alter_table('books', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_books_titles'))
         batch_op.drop_index(batch_op.f('ix_books_text'))
         batch_op.drop_index(batch_op.f('ix_books_star_url'))
         batch_op.drop_index(batch_op.f('ix_books_book_url'))
